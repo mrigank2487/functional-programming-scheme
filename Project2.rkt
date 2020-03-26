@@ -52,7 +52,46 @@
 (to-words 120)
 
 
+; Question 5
 
+;Part (a)
+(define (member? a l)
+  (cond ((null? l) #f)
+        ((equal? a (car l)) #t)
+        (else (member? a (cdr l)))))
+
+(define (filterWords lst i)
+  (cond ((null? lst) lst)
+    ((member? (car lst) i) (filterWords (cdr lst) i))
+    (else (cons (car lst) (filterWords (cdr lst) i)))))
+
+;Part (b)
+(define (iniWordCountList lst)
+  (if (null? lst) '()
+      (cons (cons (car lst) '(1)) (iniWordCountList (cdr lst)))))
+
+;Part (c)
+(define (mergeWordCounts pair lst)
+  (cond ((null? lst) lst)
+        ((member? pair lst) (list (car lst) (list (car pair) (+ (car (cdr pair)) 1))))
+        (else (append lst (list pair)))))
+
+;Part (d)
+(define (reduce f l v)
+  (if (null? l) v
+      (f (car l) (reduce f (cdr l) v))))
+(define mergeByWord 
+
+  
+
+;Part (e)
+
+
+
+(filterWords '(time is long but life is short) '(but))
+(iniWordCountList '(time is long life is short))
+(mergeWordCounts '(is 1) '((time 1) (is 1)))
+(mergeWordCounts '(life 1) '((time 1) (is 2)))
 
   
 
