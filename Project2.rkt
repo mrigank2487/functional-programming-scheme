@@ -80,7 +80,7 @@
 (define (reduce f l v)
   (if (null? l) v
       (f (car l) (reduce f (cdr l) v))))
-(define mergeByWord 
+
 
   
 
