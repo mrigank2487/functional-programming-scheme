@@ -30,6 +30,7 @@
 ; Question 3
 (define (least_helper k x)
   (cond ((null? x) k)
+        ((equal? k (car x)) (least_helper k (cdr x)))
         ((< k (car x)) (least_helper k (cdr x)))
         ((> k (car x)) (least_helper (car x) (cdr x)))))
 (define(least x)
@@ -93,26 +94,25 @@
 ;; Part (c)
 (define (mergeWordCounts pair lst)
   (cond ((null? lst) lst)
-        ((member? pair lst) (list (car lst) (list (car pair) (+ (car (cdr pair)) 1))))
+        ((member? pair lst) (cond ((equal? pair (car lst)) (mergeWordCounts (list (car pair) (+ (car (cdr pair)) 1)) (cdr lst)))
+                                  (else (cons (car lst) (mergeWordCounts pair (cdr lst))))))
         (else (append lst (list pair)))))
 
 ;; Part (d)
 (define (reduce f l v)
   (if (null? l) v
       (f (car l) (reduce f (cdr l) v))))
-;(define (mergeByWord lst))
-
-  
+(define (mergeByWord lst)
+  (cond ((null? lst) lst)
+        (else (reduce mergeWordCounts (cdr lst) (list (car lst))))))
 
 ;; Part (e)
-;(define (relevantWordCount lst1 lst2))
+(define (relevantWordCount lst i)
+  (mergeByWord (iniWordCountList (filterWords lst i))))
 
 ;;; Tests
 (filterWords '(time is long but life is short) '(but))
 (iniWordCountList '(time is long life is short))
 (mergeWordCounts '(is 1) '((time 1) (is 1)))
 (mergeWordCounts '(life 1) '((time 1) (is 2)))
-
-  
-
-
+(mergeByWord '((time 1) (is 1) (long 1) (but 1) (life 1) (is 1) (short 1)))
