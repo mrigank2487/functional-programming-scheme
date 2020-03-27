@@ -11,6 +11,7 @@
 (define (add-one x)
   (+ x 1))
 
+;;; Tests
 (dncall 2 add-one 2)
 
 
@@ -22,11 +23,22 @@
    (if (equal? #f (f (car l))) (keep-if f (cdr l))
        (cons (car l) (keep-if f (cdr l))))))
 
-
+;;; Tests
 (keep-if f '(10 1 7 2))
 
 
 ; Question 3
+(define (least_helper k x)
+  (cond ((null? x) k)
+        ((< k (car x)) (least_helper k (cdr x)))
+        ((> k (car x)) (least_helper (car x) (cdr x)))))
+(define(least x)
+  (cond ((null? x) 'empty)
+        ((least_helper (car x) (cdr x)))))
+
+;;; Tests
+(least '(7 3 6 2))
+(least_helper 5 '(4 5 6))
 
 
 
@@ -53,7 +65,7 @@
        (else
         '(error)))))))
 
-
+;;; Tests
 (to-words 13)
 (to-words -55)
 (to-words 0)
@@ -62,7 +74,7 @@
 
 ; Question 5
 
-;Part (a)
+;; Part (a)
 (define (member? a l)
   (cond ((null? l) #f)
         ((equal? a (car l)) #t)
@@ -73,18 +85,18 @@
     ((member? (car lst) i) (filterWords (cdr lst) i))
     (else (cons (car lst) (filterWords (cdr lst) i)))))
 
-;Part (b)
+;; Part (b)
 (define (iniWordCountList lst)
   (if (null? lst) '()
       (cons (cons (car lst) '(1)) (iniWordCountList (cdr lst)))))
 
-;Part (c)
+;; Part (c)
 (define (mergeWordCounts pair lst)
   (cond ((null? lst) lst)
         ((member? pair lst) (list (car lst) (list (car pair) (+ (car (cdr pair)) 1))))
         (else (append lst (list pair)))))
 
-;Part (d)
+;; Part (d)
 (define (reduce f l v)
   (if (null? l) v
       (f (car l) (reduce f (cdr l) v))))
@@ -92,10 +104,10 @@
 
   
 
-;Part (e)
+;; Part (e)
 ;(define (relevantWordCount lst1 lst2))
 
-
+;;; Tests
 (filterWords '(time is long but life is short) '(but))
 (iniWordCountList '(time is long life is short))
 (mergeWordCounts '(is 1) '((time 1) (is 1)))
