@@ -4,6 +4,14 @@
 
 
 ; Question 1
+(define (dncall n f x)
+  (cond ((equal? n 0) x)
+        ((equal? n 1) (f (f x)))
+        (else (dncall (- n 1) f (f (f x))))))
+(define (add-one x)
+  (+ x 1))
+
+(dncall 2 add-one 2)
 
 
 ; Question 2
@@ -80,12 +88,12 @@
 (define (reduce f l v)
   (if (null? l) v
       (f (car l) (reduce f (cdr l) v))))
-
+;(define (mergeByWord lst))
 
   
 
 ;Part (e)
-
+;(define (relevantWordCount lst1 lst2))
 
 
 (filterWords '(time is long but life is short) '(but))
