@@ -15,6 +15,7 @@
 (dncall 2 add-one 2)
 
 
+
 ; Question 2
 (define (f x)
   (if (> x 3) #t #f))
@@ -25,6 +26,7 @@
 
 ;;; Tests
 (keep-if f '(10 1 7 2))
+
 
 
 ; Question 3
@@ -73,6 +75,7 @@
 (to-words 120)
 
 
+
 ; Question 5
 
 ;; Part (a)
@@ -81,34 +84,35 @@
         ((equal? a (car l)) #t)
         (else (member? a (cdr l)))))
 
-(define (filterWords lst i)
-  (cond ((null? lst) lst)
-    ((member? (car lst) i) (filterWords (cdr lst) i))
-    (else (cons (car lst) (filterWords (cdr lst) i)))))
+(define (filterWords wordList irrelevantWordList)
+  (cond ((null? wordList) wordList)
+    ((member? (car wordList) irrelevantWordList) (filterWords (cdr wordList) irrelevantWordList))
+    (else (cons (car wordList) (filterWords (cdr wordList) irrelevantWordList)))))
 
 ;; Part (b)
-(define (iniWordCountList lst)
-  (if (null? lst) '()
-      (cons (cons (car lst) '(1)) (iniWordCountList (cdr lst)))))
+(define (iniWordCountList wordList)
+  (if (null? wordList) '()
+      (cons (cons (car wordList) '(1)) (iniWordCountList (cdr wordList)))))
 
 ;; Part (c)
-(define (mergeWordCounts pair lst)
-  (cond ((null? lst) lst)
-        ((member? pair lst) (cond ((equal? pair (car lst)) (mergeWordCounts (list (car pair) (+ (car (cdr pair)) 1)) (cdr lst)))
-                                  (else (cons (car lst) (mergeWordCounts pair (cdr lst))))))
-        (else (append lst (list pair)))))
+(define (mergeWordCounts wordCountPair wordCountList)
+  (cond ((null?  wordCountList)  wordCountList)
+        ((member? wordCountPair  wordCountList)
+         (cond ((equal? wordCountPair (car  wordCountList)) (mergeWordCounts (list (car wordCountPair) (+ (car (cdr wordCountPair)) 1)) (cdr  wordCountList)))
+               (else (cons (car  wordCountList) (mergeWordCounts wordCountPair (cdr  wordCountList))))))
+        (else (append wordCountList (list  wordCountPair)))))
 
 ;; Part (d)
 (define (reduce f l v)
   (if (null? l) v
       (f (car l) (reduce f (cdr l) v))))
-(define (mergeByWord lst)
-  (cond ((null? lst) lst)
-        (else (reduce mergeWordCounts (cdr lst) (list (car lst))))))
+(define (mergeByWord wordCountList)
+  (cond ((null? wordCountList) wordCountList)
+        (else (reduce mergeWordCounts (cdr wordCountList) (list (car wordCountList))))))
 
 ;; Part (e)
-(define (relevantWordCount lst i)
-  (mergeByWord (iniWordCountList (filterWords lst i))))
+(define (relevantWordCount  wordList irrelevantWordList)
+  (mergeByWord (iniWordCountList (filterWords  wordList irrelevantWordList))))
 
 ;;; Tests
 (filterWords '(time is long but life is short) '(but))
