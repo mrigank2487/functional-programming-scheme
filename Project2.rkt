@@ -56,15 +56,11 @@
   (else
    (let loop ((n n) (units hundreds) (res '()))
      (cond
-       
        ((< n 0) (append '(negative) (to-words(abs n))))
-       
        ((= n 0) res)
-       
        ((< 0 n 20) (cons (list-ref OneToNineteen (- n 1)) res))
        ((< n 100) (cons (list-ref TenMultiples (- (quotient n 10) 2))
                         (loop (remainder n 10) '() res)))
-      
        (else
         '(error)))))))
 
@@ -96,11 +92,11 @@
 
 ;; Part (c)
 (define (mergeWordCounts wordCountPair wordCountList)
-  (cond ((null?  wordCountList)  wordCountList)
-        ((member? wordCountPair  wordCountList)
-         (cond ((equal? wordCountPair (car  wordCountList)) (mergeWordCounts (list (car wordCountPair) (+ (car (cdr wordCountPair)) 1)) (cdr  wordCountList)))
-               (else (cons (car  wordCountList) (mergeWordCounts wordCountPair (cdr  wordCountList))))))
-        (else (append wordCountList (list  wordCountPair)))))
+  (cond ((null? wordCountList) wordCountList)
+        ((member? wordCountPair wordCountList)
+         (cond ((equal? wordCountPair (car  wordCountList)) (cons (list (car wordCountPair) (+ (car (cdr wordCountPair)) 1)) (cdr wordCountList)))
+               (else (cons (car wordCountList) (mergeWordCounts wordCountPair (cdr wordCountList))))))
+        (else (append wordCountList (list wordCountPair)))))
 
 ;; Part (d)
 (define (reduce f l v)
